@@ -1,36 +1,114 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FGS Staffing Agency - Client Portal
+
+This is the client portal for the FGS Staffing Agency management system, built using Next.js, TypeScript, Tailwind CSS, and Supabase.
+
+## Features
+
+- **User Authentication**: Secure login and registration for clients
+- **Client Dashboard**: Overview of current staff, subscriptions, and account details
+- **Staff Directory**: Browse available staff and make selections
+- **Staff Hiring**: Request staff for specific roles
+- **Subscription Management**: View, upgrade, or cancel subscription plans
+- **Profile Management**: Update client information
+
+## Prerequisites
+
+- Node.js (v16 or higher)
+- A Supabase account
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository:
+   ```bash
+   git clone [repository-url]
+   cd client-portal
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Set up your environment variables:
+   Create a `.env.local` file in the root of the project with the following:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+   ```
+
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Project Structure
+
+```
+client-portal/
+├── src/
+│   ├── app/               # Next.js App Router
+│   │   ├── api/           # API routes
+│   │   ├── auth/          # Authentication pages
+│   │   ├── clients/       # Client area pages
+│   │   │   ├── dashboard/ # Client dashboard
+│   │   │   ├── hiring/    # Staff hiring
+│   ├── lib/               # Utility functions and libraries
+│   │   └── supabase.ts    # Supabase client
+│   ├── components/        # Reusable components
+│   ├── middleware.ts      # Auth middleware
+├── public/                # Static assets
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Database Schema
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The application uses the following Supabase tables:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Clients
+- `id`: UUID (primary key)
+- `created_at`: Timestamp
+- `email`: String
+- `name`: String
+- `phone`: String
+- `status`: String (active, inactive)
+- `subscription_id`: UUID (foreign key to subscriptions table)
 
-## Learn More
+### Staff
+- `id`: UUID (primary key)
+- `created_at`: Timestamp
+- `name`: String
+- `position`: String
+- `experience`: Number
+- `salary`: Number
+- `available`: Boolean
+- `bio`: Text
+- `image_url`: String
 
-To learn more about Next.js, take a look at the following resources:
+### Subscriptions
+- `id`: UUID (primary key)
+- `created_at`: Timestamp
+- `plan_id`: String
+- `client_id`: UUID (foreign key to clients table)
+- `status`: String (active, canceled, pending)
+- `current_period_end`: Timestamp
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This project can be easily deployed to Vercel or Netlify:
 
-## Deploy on Vercel
+### Vercel
+```bash
+npm install -g vercel
+vercel
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Netlify
+```bash
+npm install -g netlify-cli
+netlify deploy
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+This project is licensed under the MIT License.
